@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ai.preferred</groupId>
-  <artifactId>iproperty-crawler-example</artifactId>
+  <artifactId>venom-examples</artifactId>
   <version>1.0</version>
 
   <properties>
@@ -55,21 +55,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <mainClass>ai.preferred.crawler.iproperty.master.ListingCrawler</mainClass>
-        </configuration>
       </plugin>
     </plugins>
 
