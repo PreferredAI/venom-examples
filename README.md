@@ -2,7 +2,7 @@
 Your preferred focused crawler based on [Venom](https://github.com/PreferredAI/Venom). 
 Now in a convenient package to quickly get your projects up to speed! 
 
-Bundled in this pack is a few fully functional examples to help get you up and sprinting. If you require a tutorial, you can access a example [here](https://github.com/PreferredAI/venom-tutorial).
+Bundled in this pack is a few fully functional examples to help get you up and sprinting. If you require a tutorial, you can access a tutorial [here](https://github.com/PreferredAI/venom-tutorial).
 For more information, read the tutorial guide below.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ai.preferred/venom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/ai.preferred/venom)
