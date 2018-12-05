@@ -31,3 +31,7 @@ A crawler to get the job listings for Singapore on [StackOverflow](https://stack
 
 #### ai.preferred.crawler.iproperty.master.ListingCrawler.java
 A crawler to get the properties on [iProperty.com.sg](https://www.iproperty.com.sg/).
+
+## License
+
+[MIT License](LICENSE)
