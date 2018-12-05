@@ -29,5 +29,5 @@ A basic crawler to get your current IP.
 #### ai.preferred.crawler.stackoverflow.master.ListingCrawler.java
 A crawler to get the job listings for Singapore on [StackOverflow](https://stackoverflow.com/jobs?l=Singapore&d=20&u=Km) and export to a CSV file.
 
-#### ai.preferred.crawler.single.SingleCrawler.java
+#### ai.preferred.crawler.iproperty.master.ListingCrawler.java
 A crawler to get the properties on [iProperty.com.sg](https://www.iproperty.com.sg/).
