@@ -1,6 +1,6 @@
 package ai.preferred.crawler.stackoverflow.master;
 
-import ai.preferred.crawler.stackoverflow.master.entity.Listing;
+import ai.preferred.crawler.stackoverflow.entity.Listing;
 import ai.preferred.venom.response.VResponse;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
