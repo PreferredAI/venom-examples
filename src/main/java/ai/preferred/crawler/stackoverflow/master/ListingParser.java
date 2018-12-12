@@ -14,26 +14,6 @@ import java.util.List;
  */
 public class ListingParser {
 
-  public static class FinalResult {
-
-    private final List<Listing> listings;
-
-    private final String nextPage;
-
-    private FinalResult(List<Listing> listings, String nextPage) {
-      this.listings = listings;
-      this.nextPage = nextPage;
-    }
-
-    public List<Listing> getListings() {
-      return listings;
-    }
-
-    public String getNextPage() {
-      return nextPage;
-    }
-  }
-
   public static FinalResult parse(VResponse response) {
     final Document document = response.getJsoup();
     return new FinalResult(
@@ -68,6 +48,26 @@ public class ListingParser {
       return null;
     }
     return nextPage.attr("abs:href");
+  }
+
+  public static class FinalResult {
+
+    private final List<Listing> listings;
+
+    private final String nextPage;
+
+    private FinalResult(List<Listing> listings, String nextPage) {
+      this.listings = listings;
+      this.nextPage = nextPage;
+    }
+
+    public List<Listing> getListings() {
+      return listings;
+    }
+
+    public String getNextPage() {
+      return nextPage;
+    }
   }
 
 }

@@ -17,9 +17,8 @@ import java.io.IOException;
 
 public class ListingCrawler {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
-
   static final Session.Key<EntityCSVStorage<Property>> STORAGE_KEY = new Session.Key<>();
+  private static final Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
 
   public static void main(String[] args) {
     final String filename = "data/iproperty.csv";
@@ -29,7 +28,7 @@ public class ListingCrawler {
           .put(STORAGE_KEY, storage)
           .build();
 
-      try (final Crawler crawler = crawler(fetcher(), session).start()) {
+      try (final Crawler crawler = createCrawler(createFetcher(), session).start()) {
         LOGGER.info("starting crawler...");
 
         final String startUrl = "https://www.iproperty.com.sg/rent/list/";
@@ -43,7 +42,7 @@ public class ListingCrawler {
     }
   }
 
-  private static Fetcher fetcher() {
+  private static Fetcher createFetcher() {
     return AsyncFetcher.builder()
         .validator(
             EmptyContentValidator.INSTANCE,
@@ -52,7 +51,7 @@ public class ListingCrawler {
         .build();
   }
 
-  private static Crawler crawler(Fetcher fetcher, Session session) {
+  private static Crawler createCrawler(Fetcher fetcher, Session session) {
     return Crawler.builder()
         .fetcher(fetcher)
         .session(session)

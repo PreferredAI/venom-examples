@@ -14,6 +14,10 @@ public class ListingParser {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ListingParser.class);
 
+  private ListingParser() {
+    throw new AssertionError();
+  }
+
   public static List<Property> parseListing(Document document) {
     final Elements properties = document.select("ul.listing-list.dZUSMd > li[class~=rent]");
     final ArrayList<Property> result = new ArrayList<>(properties.size());
@@ -72,10 +76,6 @@ public class ListingParser {
     }
 
     return property;
-  }
-
-  private ListingParser() {
-    throw new AssertionError();
   }
 
 }

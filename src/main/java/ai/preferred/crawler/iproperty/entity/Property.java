@@ -2,19 +2,7 @@ package ai.preferred.crawler.iproperty.entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Property {
-
-  public static List<Object> getHeader() {
-    final List<Object> result = new ArrayList<>();
-    for (final Field field : Property.class.getDeclaredFields()) {
-      result.add(field.getName());
-    }
-    return result;
-  }
 
   private String url;
   private String title;
@@ -27,84 +15,84 @@ public class Property {
   private Integer numBaths;
   private String carpark;
 
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setPrice(String price) {
-    this.price = price;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public void setArea(String area) {
-    this.area = area;
-  }
-
-  public void setPsf(String psf) {
-    this.psf = psf;
-  }
-
-  public void setNumBeds(Integer numBeds) {
-    this.numBeds = numBeds;
-  }
-
-  public void setNumBaths(Integer numBaths) {
-    this.numBaths = numBaths;
-  }
-
-  public void setCarpark(String carpark) {
-    this.carpark = carpark;
-  }
-
   public String getUrl() {
     return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public String getTitle() {
     return title;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
   public String getPrice() {
     return price;
+  }
+
+  public void setPrice(String price) {
+    this.price = price;
   }
 
   public String getType() {
     return type;
   }
 
+  public void setType(String type) {
+    this.type = type;
+  }
+
   public String getAddress() {
     return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public String getArea() {
     return area;
   }
 
+  public void setArea(String area) {
+    this.area = area;
+  }
+
   public Integer getNumBaths() {
     return numBaths;
+  }
+
+  public void setNumBaths(Integer numBaths) {
+    this.numBaths = numBaths;
   }
 
   public Integer getNumBeds() {
     return numBeds;
   }
 
+  public void setNumBeds(Integer numBeds) {
+    this.numBeds = numBeds;
+  }
+
   public String getCarpark() {
     return carpark;
   }
 
+  public void setCarpark(String carpark) {
+    this.carpark = carpark;
+  }
+
   public String getPsf() {
     return psf;
+  }
+
+  public void setPsf(String psf) {
+    this.psf = psf;
   }
 
   @Override

@@ -23,14 +23,12 @@ import java.util.ArrayList;
  */
 public class ListingCrawler {
 
-  // You can use this to log to console
-  private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
-
   // Create session keys for things you would like to retrieve from handler
   static final Session.Key<ArrayList<Listing>> JOB_LIST_KEY = new Session.Key<>();
-
   // Create session keys for CSV printer to print from handler
   static final Session.Key<EntityCSVStorage<Listing>> CSV_STORAGE_KEY = new Session.Key<>();
+  // You can use this to log to console
+  private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
 
   public static void main(String[] args) {
 
@@ -49,7 +47,7 @@ public class ListingCrawler {
           .build();
 
       // Start crawler
-      try (final Crawler crawler = crawler(fetcher(), session).start()) {
+      try (final Crawler crawler = createCrawler(createFetcher(), session).start()) {
         LOGGER.info("Starting crawler...");
 
         final String startUrl = "https://stackoverflow.com/jobs?l=Singapore&d=20&u=Km";
@@ -68,7 +66,7 @@ public class ListingCrawler {
   }
 
 
-  private static Fetcher fetcher() {
+  private static Fetcher createFetcher() {
     // You can look in builder the different things you can add
     return AsyncFetcher.builder()
         .validator(
@@ -78,7 +76,7 @@ public class ListingCrawler {
         .build();
   }
 
-  private static Crawler crawler(Fetcher fetcher, Session session) {
+  private static Crawler createCrawler(Fetcher fetcher, Session session) {
     // You can look in builder the different things you can add
     return Crawler.builder()
         .fetcher(fetcher)
