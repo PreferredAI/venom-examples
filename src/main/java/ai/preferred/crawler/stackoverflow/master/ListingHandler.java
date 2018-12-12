@@ -34,7 +34,7 @@ public class ListingHandler implements Handler {
     // Get the job listing array list we created
     final ArrayList<Listing> jobListing = session.get(ListingCrawler.JOB_LIST_KEY);
 
-    // Get the job listing array list we created
+    // Get the CSV printer we created
     final EntityCSVStorage<Listing> csvStorage = session.get(ListingCrawler.CSV_STORAGE_KEY);
 
     // Get HTML

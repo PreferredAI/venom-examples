@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class ListingParser {
 
+  private ListingParser() {
+    throw new UnsupportedOperationException();
+  }
+
   public static FinalResult parse(VResponse response) {
     final Document document = response.getJsoup();
     return new FinalResult(
@@ -42,7 +46,7 @@ public class ListingParser {
     return jobList;
   }
 
-  public static String parseNextPage(Document document) {
+  private static String parseNextPage(Document document) {
     final Element nextPage = document.select("a.prev-next.test-pagination-next").first();
     if (nextPage == null) {
       return null;

@@ -26,7 +26,9 @@ public class ListingHandler implements Handler {
   public void handle(Request request, VResponse response, Scheduler scheduler, Session session, Worker worker) {
     LOGGER.info("processing: {}", request.getUrl());
 
+    // JSoup
     final Document document = response.getJsoup();
+
     final List<Property> propertyList = ListingParser.parseListing(document);
 
     if (propertyList.isEmpty()) {
@@ -34,12 +36,14 @@ public class ListingHandler implements Handler {
       return;
     }
 
+    // Get the CSV printer we created
     final EntityCSVStorage<Property> storage = session.get(ListingCrawler.STORAGE_KEY);
     for (final Property p : propertyList) {
       LOGGER.info("storing property: {} [{}]", p.getTitle(), p.getUrl());
       storage.append(p);
     }
 
+    // Crawl another page if there's a next page
     final String url = request.getUrl();
     try {
       final URIBuilder builder = new URIBuilder(url);
@@ -51,6 +55,7 @@ public class ListingHandler implements Handler {
       }
       builder.setParameter("page", String.valueOf(currentPage + 1));
       final String nextPageUrl = builder.toString();
+      // Schedule the next page
       scheduler.add(new VRequest(nextPageUrl), this);
     } catch (URISyntaxException | NumberFormatException e) {
       LOGGER.error("unable to parse url: ", e);

@@ -16,6 +16,7 @@ import ai.preferred.venom.validator.EmptyContentValidator;
 import ai.preferred.venom.validator.StatusOkValidator;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -25,19 +26,20 @@ public class ListingCrawler {
 
   // Create session keys for things you would like to retrieve from handler
   static final Session.Key<ArrayList<Listing>> JOB_LIST_KEY = new Session.Key<>();
+
   // Create session keys for CSV printer to print from handler
   static final Session.Key<EntityCSVStorage<Listing>> CSV_STORAGE_KEY = new Session.Key<>();
+
   // You can use this to log to console
   private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
 
   public static void main(String[] args) {
 
-    // Get project directory
-    String workingDir = System.getProperty("user.dir");
+    // Get file to save to
+    final String filename = "data/stackoverflow.csv";
 
     // Start CSV printer
-    try (final EntityCSVStorage<Listing> printer = new EntityCSVStorage<>(
-        workingDir + "data/results.csv", Listing.class)) {
+    try (final EntityCSVStorage<Listing> printer = new EntityCSVStorage<>(filename, Listing.class)) {
 
       // Let's init the session, this allows us to retrieve the array list in the handler
       final ArrayList<Listing> jobListing = new ArrayList<>();
@@ -54,17 +56,18 @@ public class ListingCrawler {
 
         // pass in URL and handler or use a HandlerRouter
         crawler.getScheduler().add(new VRequest(startUrl), new ListingHandler());
+      } catch (Exception e) {
+        LOGGER.error("Could not run crawler: ", e);
       }
 
       // We will retrieve all the listing here
       LOGGER.info("We have found {} listings!", jobListing.size());
 
-    } catch (Exception e) {
-      LOGGER.error("Could not run crawler: ", e);
+    } catch (IOException e) {
+      LOGGER.error("unable to open file: {}, {}", filename, e);
     }
 
   }
-
 
   private static Fetcher createFetcher() {
     // You can look in builder the different things you can add

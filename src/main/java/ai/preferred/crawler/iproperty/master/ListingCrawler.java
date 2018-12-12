@@ -17,17 +17,26 @@ import java.io.IOException;
 
 public class ListingCrawler {
 
+  // Create session keys for CSV printer to print from handler
   static final Session.Key<EntityCSVStorage<Property>> STORAGE_KEY = new Session.Key<>();
+
+  // You can use this to log to console
   private static final Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
 
   public static void main(String[] args) {
+
+    // Get file to save to
     final String filename = "data/iproperty.csv";
+
+    // Start CSV printer
     try (final EntityCSVStorage<Property> storage = new EntityCSVStorage<>(filename, Property.class)) {
 
+      // Let's init the session, this allows us to retrieve the array list in the handler
       final Session session = Session.builder()
           .put(STORAGE_KEY, storage)
           .build();
 
+      // Start crawler
       try (final Crawler crawler = createCrawler(createFetcher(), session).start()) {
         LOGGER.info("starting crawler...");
 

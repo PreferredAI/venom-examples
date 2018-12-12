@@ -15,7 +15,7 @@ public class ListingParser {
   private static final Logger LOGGER = LoggerFactory.getLogger(ListingParser.class);
 
   private ListingParser() {
-    throw new AssertionError();
+    throw new UnsupportedOperationException();
   }
 
   public static List<Property> parseListing(Document document) {
