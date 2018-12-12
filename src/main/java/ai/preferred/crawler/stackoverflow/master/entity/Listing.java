@@ -1,5 +1,7 @@
 package ai.preferred.crawler.stackoverflow.master.entity;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * This class allows you to store your entities. Define the
  * properties of your entities in this class.
@@ -30,5 +32,10 @@ public class Listing {
 
   public String getCompany() {
     return company;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

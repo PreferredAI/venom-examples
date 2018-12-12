@@ -5,7 +5,7 @@
  */
 package ai.preferred.crawler.stackoverflow.master;
 
-import ai.preferred.crawler.stackoverflow.EntityCSVStorage;
+import ai.preferred.crawler.EntityCSVStorage;
 import ai.preferred.crawler.stackoverflow.master.entity.Listing;
 import ai.preferred.venom.Crawler;
 import ai.preferred.venom.Session;

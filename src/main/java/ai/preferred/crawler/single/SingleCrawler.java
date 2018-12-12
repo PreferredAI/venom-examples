@@ -29,7 +29,7 @@ public class SingleCrawler {
       LOGGER.info("Starting crawler...");
 
       // pass in URL and handler
-      final Request request =  new VRequest(URL);
+      final Request request = new VRequest(URL);
       final Handler handler = new SingleHandler();
 
       crawler.getScheduler().add(request, handler);

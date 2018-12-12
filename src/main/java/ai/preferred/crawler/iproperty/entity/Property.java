@@ -107,18 +107,6 @@ public class Property {
     return psf;
   }
 
-  public List<Object> asList() {
-    try {
-      final List<Object> result = new ArrayList<>();
-      for (final Field field : getClass().getDeclaredFields()) {
-        result.add(field.get(this));
-      }
-      return result;
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException("Unable to convert this entity to a list!", e);
-    }
-  }
-
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);

@@ -1,5 +1,7 @@
 package ai.preferred.crawler.stackoverflow.master.entity;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Paper {
 
   private final String name;
@@ -17,5 +19,10 @@ public class Paper {
 
   public String getUrl() {
     return url;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

@@ -1,6 +1,6 @@
 package ai.preferred.crawler.iproperty.master;
 
-import ai.preferred.crawler.iproperty.csv.PropertyStorage;
+import ai.preferred.crawler.EntityCSVStorage;
 import ai.preferred.crawler.iproperty.entity.Property;
 import ai.preferred.venom.Crawler;
 import ai.preferred.venom.Session;
@@ -19,13 +19,11 @@ public class ListingCrawler {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ListingCrawler.class);
 
-  static final Session.Key<PropertyStorage> STORAGE_KEY = new Session.Key<>();
+  static final Session.Key<EntityCSVStorage<Property>> STORAGE_KEY = new Session.Key<>();
 
   public static void main(String[] args) {
     final String filename = "data/iproperty.csv";
-    try (final PropertyStorage storage = new PropertyStorage(filename)) {
-
-      storage.append(Property.getHeader());
+    try (final EntityCSVStorage<Property> storage = new EntityCSVStorage<>(filename, Property.class)) {
 
       final Session session = Session.builder()
           .put(STORAGE_KEY, storage)

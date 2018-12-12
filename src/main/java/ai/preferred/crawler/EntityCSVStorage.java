@@ -1,4 +1,4 @@
-package ai.preferred.crawler.stackoverflow;
+package ai.preferred.crawler;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;

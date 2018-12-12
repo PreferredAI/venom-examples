@@ -1,6 +1,6 @@
 package ai.preferred.crawler.iproperty.master;
 
-import ai.preferred.crawler.iproperty.csv.PropertyStorage;
+import ai.preferred.crawler.EntityCSVStorage;
 import ai.preferred.crawler.iproperty.entity.Property;
 import ai.preferred.venom.Handler;
 import ai.preferred.venom.Session;
@@ -15,7 +15,6 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -35,15 +34,10 @@ public class ListingHandler implements Handler {
       return;
     }
 
-    final PropertyStorage storage = session.get(ListingCrawler.STORAGE_KEY);
-    try {
-      for (final Property p : propertyList) {
-        LOGGER.info("storing property: {} [{}]", p.getTitle(), p.getUrl());
-        storage.append(p);
-      }
-    } catch (IOException e) {
-      LOGGER.error("could not store property, stopping", e);
-      return;
+    final EntityCSVStorage<Property> storage = session.get(ListingCrawler.STORAGE_KEY);
+    for (final Property p : propertyList) {
+      LOGGER.info("storing property: {} [{}]", p.getTitle(), p.getUrl());
+      storage.append(p);
     }
 
     final String url = request.getUrl();
