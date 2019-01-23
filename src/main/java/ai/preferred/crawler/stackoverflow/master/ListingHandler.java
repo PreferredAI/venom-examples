@@ -45,15 +45,17 @@ public class ListingHandler implements Handler {
 
     // We will use a parser class
     final ListingParser.FinalResult finalResult = ListingParser.parse(response);
-    finalResult.getListings().forEach(listing -> {
-      LOGGER.info("Found job: {} in {} [{}]", listing.getName(), listing.getCompany(), listing.getUrl());
 
-      // Add to the array list
-      jobListing.add(listing);
-
-      // Write record in CSV
-      csvStorage.append(listing);
-    });
+    // Use this wrapper for every IO task, this maintains CPU utilisation to speed up crawling
+    worker.executeBlockingIO(() ->
+        finalResult.getListings().forEach(listing -> {
+          LOGGER.info("Found job: {} in {} [{}]", listing.getName(), listing.getCompany(), listing.getUrl());
+          // Add to the array list
+          jobListing.add(listing);
+          // Write record in CSV
+          csvStorage.append(listing);
+        })
+    );
 
     // Crawl another page if there's a next page
     if (finalResult.getNextPage() != null) {

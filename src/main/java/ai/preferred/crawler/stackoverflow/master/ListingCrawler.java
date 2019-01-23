@@ -72,9 +72,9 @@ public class ListingCrawler {
   private static Fetcher createFetcher() {
     // You can look in builder the different things you can add
     return AsyncFetcher.builder()
-        .validator(
-            EmptyContentValidator.INSTANCE,
-            StatusOkValidator.INSTANCE,
+        .setValidator(
+            new EmptyContentValidator(),
+            new StatusOkValidator(),
             new ListingValidator())
         .build();
   }
@@ -82,8 +82,8 @@ public class ListingCrawler {
   private static Crawler createCrawler(Fetcher fetcher, Session session) {
     // You can look in builder the different things you can add
     return Crawler.builder()
-        .fetcher(fetcher)
-        .session(session)
+        .setFetcher(fetcher)
+        .setSession(session)
         .build();
   }
 }

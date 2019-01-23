@@ -53,19 +53,19 @@ public class ListingCrawler {
 
   private static Fetcher createFetcher() {
     return AsyncFetcher.builder()
-        .validator(
-            EmptyContentValidator.INSTANCE,
-            StatusOkValidator.INSTANCE,
+        .setValidator(
+            new EmptyContentValidator(),
+            new StatusOkValidator(),
             new ListingValidator())
         .build();
   }
 
   private static Crawler createCrawler(Fetcher fetcher, Session session) {
     return Crawler.builder()
-        .fetcher(fetcher)
-        .session(session)
+        .setFetcher(fetcher)
+        .setSession(session)
         // Just to be polite
-        .sleepScheduler(new SleepScheduler(1500, 3000))
+        .setSleepScheduler(new SleepScheduler(1500, 3000))
         .build();
   }
 

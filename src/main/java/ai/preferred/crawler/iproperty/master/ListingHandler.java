@@ -38,10 +38,14 @@ public class ListingHandler implements Handler {
 
     // Get the CSV printer we created
     final EntityCSVStorage<Property> storage = session.get(ListingCrawler.STORAGE_KEY);
-    for (final Property p : propertyList) {
-      LOGGER.info("storing property: {} [{}]", p.getTitle(), p.getUrl());
-      storage.append(p);
-    }
+
+    // Use this wrapper for every IO task, this maintains CPU utilisation to speed up crawling
+    worker.executeBlockingIO(() -> {
+      for (final Property p : propertyList) {
+        LOGGER.info("storing property: {} [{}]", p.getTitle(), p.getUrl());
+        storage.append(p);
+      }
+    });
 
     // Crawl another page if there's a next page
     final String url = request.getUrl();

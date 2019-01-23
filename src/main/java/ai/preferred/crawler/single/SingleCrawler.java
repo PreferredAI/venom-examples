@@ -25,7 +25,7 @@ public class SingleCrawler {
 
   public static void main(String[] args) {
 
-    try (Crawler crawler = crawler(httpFetcher()).start()) {
+    try (Crawler crawler = createCrawler(createFetcher()).start()) {
       LOGGER.info("Starting crawler...");
 
       // pass in URL and handler
@@ -39,16 +39,16 @@ public class SingleCrawler {
 
   }
 
-  private static Fetcher httpFetcher() {
+  private static Fetcher createFetcher() {
     // You can look in builder the different things you can add
     return AsyncFetcher.builder()
         .build();
   }
 
-  private static Crawler crawler(Fetcher fetcher) {
+  private static Crawler createCrawler(Fetcher fetcher) {
     // You can look in builder the different things you can add
     return Crawler.builder()
-        .fetcher(fetcher)
+        .setFetcher(fetcher)
         .build();
   }
 }
