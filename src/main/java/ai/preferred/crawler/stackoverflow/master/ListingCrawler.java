@@ -12,6 +12,8 @@ import ai.preferred.venom.Session;
 import ai.preferred.venom.fetcher.AsyncFetcher;
 import ai.preferred.venom.fetcher.Fetcher;
 import ai.preferred.venom.request.VRequest;
+import ai.preferred.venom.storage.FileManager;
+import ai.preferred.venom.storage.MysqlFileManager;
 import ai.preferred.venom.validator.EmptyContentValidator;
 import ai.preferred.venom.validator.StatusOkValidator;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,16 @@ public class ListingCrawler {
     // Get file to save to
     final String filename = "data/stackoverflow.csv";
 
+    // Define config for MysqlFileManager
+    final String host = "localhost";
+    final int port = 3306;
+    final String database = "filemanager";
+    final String table = "responses";
+    final String user = "root";
+    final String password = "";
+    final String dir = "C:\\";
+    final String mysqlLocation = "jdbc:mysql://" + host + ":" + port + "/" + database;
+
     // Start CSV printer
     try (final EntityCSVStorage<Listing> printer = new EntityCSVStorage<>(filename, Listing.class)) {
 
@@ -48,8 +60,9 @@ public class ListingCrawler {
           .put(CSV_STORAGE_KEY, printer)
           .build();
 
-      // Start crawler
-      try (final Crawler crawler = createCrawler(createFetcher(), session).start()) {
+      // Start crawler and FileManager
+      try (final FileManager fileManager = new MysqlFileManager(mysqlLocation, table, user, password, dir);
+           final Crawler crawler = createCrawler(createFetcher(fileManager), session).start()) {
         LOGGER.info("Starting crawler...");
 
         final String startUrl = "https://stackoverflow.com/jobs?l=Singapore&d=20&u=Km";
@@ -64,18 +77,19 @@ public class ListingCrawler {
       LOGGER.info("We have found {} listings!", jobListing.size());
 
     } catch (IOException e) {
-      LOGGER.error("unable to open file: {}, {}", filename, e);
+      LOGGER.error("Unable to open file: {}, {}", filename, e);
     }
 
   }
 
-  private static Fetcher createFetcher() {
+  private static Fetcher createFetcher(FileManager fileManager) {
     // You can look in builder the different things you can add
     return AsyncFetcher.builder()
         .setValidator(
             new EmptyContentValidator(),
             new StatusOkValidator(),
             new ListingValidator())
+        .setFileManager(fileManager)
         .build();
   }
 
