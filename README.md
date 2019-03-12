@@ -15,6 +15,7 @@ Check out our main [Venom](https://github.com/PreferredAI/Venom) page for more i
 
 ### Quick links
 [Website](https://venom.preferred.ai/) |
+[Wiki](https://github.com/PreferredAI/venom/wiki) |
 [API Reference](https://venom.preferred.ai/docs/) |
 [PreferredAI](https://preferred.ai/)
 
@@ -22,6 +23,8 @@ Check out our main [Venom](https://github.com/PreferredAI/Venom) page for more i
 venom-examples includes a set of tutorial designed to quickly get you from 0 to 100.
 
 There are 3 examples located in the package ai.preferred.crawler.single, ai.preferred.crawler.stackoverflow and ai.preferred.crawler.iproperty. 
+
+If you would like to find out more, feel free to visit our [Wiki](https://github.com/PreferredAI/venom/wiki).
 
 #### ai.preferred.crawler.single.SingleCrawler.java
 A basic crawler to get your current IP.
