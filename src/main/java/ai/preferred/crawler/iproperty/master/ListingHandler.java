@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -43,7 +44,11 @@ public class ListingHandler implements Handler {
     worker.executeBlockingIO(() -> {
       for (final Property p : propertyList) {
         LOGGER.info("storing property: {} [{}]", p.getTitle(), p.getUrl());
-        storage.append(p);
+        try {
+          storage.append(p);
+        } catch (IOException e) {
+          LOGGER.error("Unable to store listing.", e);
+        }
       }
     });
 

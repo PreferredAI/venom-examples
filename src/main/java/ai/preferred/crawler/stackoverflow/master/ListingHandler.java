@@ -18,7 +18,8 @@ import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Ween Jiann Lee
@@ -32,7 +33,7 @@ public class ListingHandler implements Handler {
     LOGGER.info("Processing {}", request.getUrl());
 
     // Get the job listing array list we created
-    final ArrayList<Listing> jobListing = session.get(ListingCrawler.JOB_LIST_KEY);
+    final AtomicInteger listingCount = session.get(ListingCrawler.LISTING_COUNT_kEY);
 
     // Get the CSV printer we created
     final EntityCSVStorage<Listing> csvStorage = session.get(ListingCrawler.CSV_STORAGE_KEY);
@@ -50,10 +51,14 @@ public class ListingHandler implements Handler {
     worker.executeBlockingIO(() ->
         finalResult.getListings().forEach(listing -> {
           LOGGER.info("Found job: {} in {} [{}]", listing.getName(), listing.getCompany(), listing.getUrl());
-          // Add to the array list
-          jobListing.add(listing);
-          // Write record in CSV
-          csvStorage.append(listing);
+          try {
+            // Write record in CSV
+            csvStorage.append(listing);
+            // Add to the count
+            listingCount.incrementAndGet();
+          } catch (IOException e) {
+            LOGGER.error("Unable to store listing.", e);
+          }
         })
     );
 

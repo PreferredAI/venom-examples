@@ -29,7 +29,7 @@ public class ListingCrawler {
     final String filename = "data/iproperty.csv";
 
     // Start CSV printer
-    try (final EntityCSVStorage<Property> storage = new EntityCSVStorage<>(filename, Property.class)) {
+    try (final EntityCSVStorage<Property> storage = new EntityCSVStorage<>(filename)) {
 
       // Let's init the session, this allows us to retrieve the array list in the handler
       final Session session = Session.builder()

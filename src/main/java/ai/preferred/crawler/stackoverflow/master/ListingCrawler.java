@@ -12,14 +12,16 @@ import ai.preferred.venom.Session;
 import ai.preferred.venom.fetcher.AsyncFetcher;
 import ai.preferred.venom.fetcher.Fetcher;
 import ai.preferred.venom.request.VRequest;
+import ai.preferred.venom.response.VResponse;
 import ai.preferred.venom.storage.FileManager;
 import ai.preferred.venom.storage.MysqlFileManager;
 import ai.preferred.venom.validator.EmptyContentValidator;
 import ai.preferred.venom.validator.StatusOkValidator;
+import ai.preferred.venom.validator.Validator;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Ween Jiann Lee
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 public class ListingCrawler {
 
   // Create session keys for things you would like to retrieve from handler
-  static final Session.Key<ArrayList<Listing>> JOB_LIST_KEY = new Session.Key<>();
+  static final Session.Key<AtomicInteger> LISTING_COUNT_kEY = new Session.Key<>();
 
   // Create session keys for CSV printer to print from handler
   static final Session.Key<EntityCSVStorage<Listing>> CSV_STORAGE_KEY = new Session.Key<>();
@@ -51,18 +53,18 @@ public class ListingCrawler {
     final String mysqlLocation = "jdbc:mysql://" + host + ":" + port + "/" + database;
 
     // Start CSV printer
-    try (final EntityCSVStorage<Listing> printer = new EntityCSVStorage<>(filename, Listing.class)) {
+    try (final EntityCSVStorage<Listing> printer = new EntityCSVStorage<>(filename);
+         final FileManager fileManager = new MysqlFileManager(mysqlLocation, table, user, password, dir)
+    ) {
 
-      // Let's init the session, this allows us to retrieve the array list in the handler
-      final ArrayList<Listing> jobListing = new ArrayList<>();
+      final AtomicInteger listingCount = new AtomicInteger();
       final Session session = Session.builder()
-          .put(JOB_LIST_KEY, jobListing)
+          .put(ListingCrawler.LISTING_COUNT_kEY, listingCount)
           .put(CSV_STORAGE_KEY, printer)
           .build();
 
       // Start crawler and FileManager
-      try (final FileManager fileManager = new MysqlFileManager(mysqlLocation, table, user, password, dir);
-           final Crawler crawler = createCrawler(createFetcher(fileManager), session).start()) {
+      try (final Crawler crawler = createCrawler(createFetcher(fileManager), session).start()) {
         LOGGER.info("Starting crawler...");
 
         final String startUrl = "https://stackoverflow.com/jobs?l=Singapore&d=20&u=Km";
@@ -74,10 +76,12 @@ public class ListingCrawler {
       }
 
       // We will retrieve all the listing here
-      LOGGER.info("We have found {} listings!", jobListing.size());
+      LOGGER.info("We have found {} listings!", listingCount.get());
 
     } catch (IOException e) {
       LOGGER.error("Unable to open file: {}, {}", filename, e);
+    } catch (Exception e) {
+      LOGGER.error("FileManager failed to close.", e);
     }
 
   }
@@ -88,7 +92,12 @@ public class ListingCrawler {
         .setValidator(
             new EmptyContentValidator(),
             new StatusOkValidator(),
-            new ListingValidator())
+            (request, response) -> {
+              if (new VResponse(response).getHtml().contains("Jobs in Singapore")) {
+                return Validator.Status.VALID;
+              }
+              return Validator.Status.INVALID_CONTENT;
+            })
         .setFileManager(fileManager)
         .build();
   }
