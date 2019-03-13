@@ -34,7 +34,7 @@ public class ListingValidator implements Validator {
     final VResponse vResponse = new VResponse(response);
 
     // Do some checks here
-    if (vResponse.getHtml().contains("Jobs in Singapore")) {
+    if (vResponse.getHtml().contains("search jobs")) {
       return Status.VALID;
     }
 
