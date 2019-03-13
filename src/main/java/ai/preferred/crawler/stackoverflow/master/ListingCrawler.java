@@ -12,12 +12,10 @@ import ai.preferred.venom.Session;
 import ai.preferred.venom.fetcher.AsyncFetcher;
 import ai.preferred.venom.fetcher.Fetcher;
 import ai.preferred.venom.request.VRequest;
-import ai.preferred.venom.response.VResponse;
 import ai.preferred.venom.storage.FileManager;
 import ai.preferred.venom.storage.MysqlFileManager;
 import ai.preferred.venom.validator.EmptyContentValidator;
 import ai.preferred.venom.validator.StatusOkValidator;
-import ai.preferred.venom.validator.Validator;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -92,12 +90,7 @@ public class ListingCrawler {
         .setValidator(
             new EmptyContentValidator(),
             new StatusOkValidator(),
-            (request, response) -> {
-              if (new VResponse(response).getHtml().contains("Jobs in Singapore")) {
-                return Validator.Status.VALID;
-              }
-              return Validator.Status.INVALID_CONTENT;
-            })
+            new ListingValidator())
         .setFileManager(fileManager)
         .build();
   }
