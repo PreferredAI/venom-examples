@@ -42,7 +42,7 @@ public class EntityCSVStorage<T> implements AutoCloseable {
     return result;
   }
 
-  public synchronized boolean append(T object) throws IOException {
+  public synchronized void append(T object) throws IOException {
     if (!hasHeader) {
       printer.printRecord(getHeaderList(object.getClass()));
       printer.flush();
@@ -55,7 +55,6 @@ public class EntityCSVStorage<T> implements AutoCloseable {
     } catch (IllegalAccessException e) {
       throw new IOException("unable to store property: ", e);
     }
-    return true;
   }
 
   @Override
