@@ -29,7 +29,7 @@ public class ListingCrawler {
     final String filename = "data/iproperty.csv";
 
     // Start CSV printer
-    try (final EntityCSVStorage<Property> storage = new EntityCSVStorage<>(filename)) {
+    try (EntityCSVStorage<Property> storage = new EntityCSVStorage<>(filename)) {
 
       // Let's init the session, this allows us to retrieve the array list in the handler
       final Session session = Session.builder()
@@ -37,7 +37,7 @@ public class ListingCrawler {
           .build();
 
       // Start crawler
-      try (final Crawler crawler = createCrawler(createFetcher(), session).start()) {
+      try (Crawler crawler = createCrawler(createFetcher(), session).start()) {
         LOGGER.info("starting crawler...");
 
         final String startUrl = "https://www.iproperty.com.sg/rent/list/";

@@ -62,7 +62,7 @@ public class ListingCrawler {
           .build();
 
       // Start crawler and FileManager
-      try (final Crawler crawler = createCrawler(createFetcher(fileManager), session).start()) {
+      try (Crawler crawler = createCrawler(createFetcher(fileManager), session).start()) {
         LOGGER.info("Starting crawler...");
 
         final String startUrl = "https://stackoverflow.com/jobs?l=Singapore&d=20&u=Km";
