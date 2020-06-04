@@ -36,8 +36,7 @@ public class SingleHandler implements Handler {
 
     // Get our IP
     final Document document = response.getJsoup();
-    final String ip = document.select("#content > div.main-box > div > div.column > div > strong")
-        .first().text();
+    final String ip = document.select(".your-ip").first().text();
 
     LOGGER.info("My IP is {}, let's go to {} to verify", ip, request.getUrl());
   }
