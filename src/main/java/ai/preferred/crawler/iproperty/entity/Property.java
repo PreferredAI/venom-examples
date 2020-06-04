@@ -2,6 +2,10 @@ package ai.preferred.crawler.iproperty.entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * This class allows you to store your entities. Define the
+ * properties of your entities in this class.
+ */
 public class Property {
 
   private String url;
