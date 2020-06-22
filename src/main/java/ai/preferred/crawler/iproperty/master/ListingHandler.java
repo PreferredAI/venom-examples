@@ -5,6 +5,8 @@ import ai.preferred.crawler.iproperty.entity.Property;
 import ai.preferred.venom.Handler;
 import ai.preferred.venom.Session;
 import ai.preferred.venom.Worker;
+import ai.preferred.venom.job.Priority;
+import ai.preferred.venom.job.PriorityJobAttribute;
 import ai.preferred.venom.job.Scheduler;
 import ai.preferred.venom.request.Request;
 import ai.preferred.venom.request.VRequest;
@@ -65,7 +67,8 @@ public class ListingHandler implements Handler {
       builder.setParameter("page", String.valueOf(currentPage + 1));
       final String nextPageUrl = builder.toString();
       // Schedule the next page
-      scheduler.add(new VRequest(nextPageUrl), this);
+      scheduler.add(new VRequest(nextPageUrl), this,
+          new PriorityJobAttribute(Priority.HIGHEST));
     } catch (URISyntaxException | NumberFormatException e) {
       LOGGER.error("unable to parse url: ", e);
     }
