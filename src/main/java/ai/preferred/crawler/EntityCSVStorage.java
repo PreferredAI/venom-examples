@@ -19,12 +19,16 @@ public class EntityCSVStorage<T> implements AutoCloseable {
 
   private boolean hasHeader;
 
-  public EntityCSVStorage(String file) throws IOException {
-    printer = new CSVPrinter(new FileWriter(file), CSVFormat.EXCEL);
-    hasHeader = false;
+  public EntityCSVStorage(final String file) throws IOException {
+    this(file, CSVFormat.DEFAULT);
   }
 
-  private static List<String> getHeaderList(Class clazz) {
+  public EntityCSVStorage(final String file, final CSVFormat csvFormat) throws IOException {
+    this.printer = new CSVPrinter(new FileWriter(file), csvFormat);
+    this.hasHeader = false;
+  }
+
+  private static List<String> getHeaderList(final Class<?> clazz) {
     final List<String> result = new ArrayList<>();
     for (final Field field : clazz.getDeclaredFields()) {
       result.add(field.getName());
@@ -32,7 +36,7 @@ public class EntityCSVStorage<T> implements AutoCloseable {
     return result;
   }
 
-  private List<Object> toList(Object object) throws IllegalAccessException {
+  private List<Object> toList(final Object object) throws IllegalAccessException {
     final Field[] fields = object.getClass().getDeclaredFields();
     final List<Object> result = new ArrayList<>();
     for (final Field field : fields) {
@@ -42,7 +46,7 @@ public class EntityCSVStorage<T> implements AutoCloseable {
     return result;
   }
 
-  public synchronized void append(T object) throws IOException {
+  public synchronized void append(final T object) throws IOException {
     if (!hasHeader) {
       printer.printRecord(getHeaderList(object.getClass()));
       printer.flush();
@@ -52,6 +56,7 @@ public class EntityCSVStorage<T> implements AutoCloseable {
     try {
       printer.printRecord(toList(object));
       printer.flush();
+      LOGGER.debug("Appended {}", object.hashCode());
     } catch (IllegalAccessException e) {
       throw new IOException("unable to store property: ", e);
     }
