@@ -1,7 +1,7 @@
 package ai.preferred.crawler.azure.translate;
 
 import ai.preferred.crawler.EntityCSVStorage;
-import ai.preferred.crawler.iproperty.entity.Title;
+import ai.preferred.crawler.azure.entity.Title;
 import ai.preferred.venom.Handler;
 import ai.preferred.venom.Session;
 import ai.preferred.venom.Worker;

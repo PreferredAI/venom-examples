@@ -2,7 +2,7 @@ package ai.preferred.crawler.azure.translate;
 
 import ai.preferred.crawler.EntityCSVReader;
 import ai.preferred.crawler.EntityCSVStorage;
-import ai.preferred.crawler.iproperty.entity.Title;
+import ai.preferred.crawler.azure.entity.Title;
 import ai.preferred.venom.Crawler;
 import ai.preferred.venom.Session;
 import ai.preferred.venom.SleepScheduler;

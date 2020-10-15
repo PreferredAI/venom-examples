@@ -1,4 +1,4 @@
-package ai.preferred.crawler.iproperty.entity;
+package ai.preferred.crawler.azure.entity;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

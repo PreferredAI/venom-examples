@@ -1,6 +1,6 @@
 package ai.preferred.crawler.azure.translate;
 
-import ai.preferred.crawler.iproperty.entity.Title;
+import ai.preferred.crawler.azure.entity.Title;
 import ai.preferred.venom.request.VRequest;
 
 import java.util.List;
