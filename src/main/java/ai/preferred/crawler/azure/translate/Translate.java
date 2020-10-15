@@ -13,9 +13,7 @@ import ai.preferred.venom.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ween Jiann Lee
@@ -36,6 +34,11 @@ public class Translate {
    * Path to the input file
    */
   private static final String INPUT_FILEPATH = "data/translate_input.csv";
+
+  /**
+   * Path to the completed file
+   */
+  private static final String COMPLETED_FILEPATH = "data/titles_old.csv";
 
   /**
    * Path to the output file (will be created if not exist, all data will be overridden)
@@ -66,8 +69,11 @@ public class Translate {
   }
 
   public static void main(String[] args) {
-    try (final EntityCSVStorage<Title> storage = new EntityCSVStorage<>(OUTPUT_FILEPATH);
-         final EntityCSVReader<Title> input = new EntityCSVReader<>(INPUT_FILEPATH, Title.class)) {
+    try (
+        final EntityCSVReader<Title> input = new EntityCSVReader<>(INPUT_FILEPATH, Title.class);
+        final EntityCSVStorage<Title> storage = new EntityCSVStorage<>(OUTPUT_FILEPATH);
+        final EntityCSVReader<Title> completed = new EntityCSVReader<>(COMPLETED_FILEPATH, Title.class)
+    ) {
 
       final Session session = Session.builder()
           .put(STORAGE_KEY, storage)
@@ -77,7 +83,9 @@ public class Translate {
       headers.put("Content-Type", "application/json");
       headers.put("Ocp-Apim-Subscription-Key", TRANSLATE_KEY);
 
-      crawler(session, fetcher(headers), new TranslateIterator(input)).startAndClose();
+      final Set<String> completedIds = new HashSet<>();
+      completed.forEachRemaining(e -> completedIds.add(e.getId()));
+      crawler(session, fetcher(headers), new TranslateIterator(input, completedIds)).startAndClose();
 
     } catch (Exception e) {
       LOGGER.error("An error occurred in the crawler", e);

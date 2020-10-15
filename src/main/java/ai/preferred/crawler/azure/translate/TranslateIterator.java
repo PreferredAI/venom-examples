@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Ween Jiann Lee
@@ -20,13 +21,15 @@ public class TranslateIterator implements Iterator<Request> {
 
   private final EntityCSVReader<Title> titleEntityCSVReader;
 
+  private final Set<String> completedIds;
 
   private final List<Title> titlesBuffer = new LinkedList<>();
 
   private final List<RequestBody> requestBuffer = new LinkedList<>();
 
-  TranslateIterator(final EntityCSVReader<Title> titleEntityCSVReader) {
+  TranslateIterator(final EntityCSVReader<Title> titleEntityCSVReader, final Set<String> completedIds) {
     this.titleEntityCSVReader = titleEntityCSVReader;
+    this.completedIds = completedIds;
   }
 
   /**
@@ -42,6 +45,10 @@ public class TranslateIterator implements Iterator<Request> {
 
     for (int i = 0; i < 25 && titleEntityCSVReader.hasNext(); i++) {
       final Title title = titleEntityCSVReader.next();
+      if (completedIds.contains(title.getId())) {
+        i--;
+        continue;
+      }
       titlesBuffer.add(title);
       requestBuffer.add(new RequestBody(title.getTitle()));
     }
@@ -66,8 +73,7 @@ public class TranslateIterator implements Iterator<Request> {
 
   @Override
   public synchronized Request next() {
-    @SuppressWarnings("UnnecessaryLocalVariable")
-    final List<Title> titles = titlesBuffer;
+    @SuppressWarnings("UnnecessaryLocalVariable") final List<Title> titles = titlesBuffer;
     final String content = new Gson().toJson(requestBuffer);
     flushBuffer();
 
