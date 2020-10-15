@@ -20,7 +20,6 @@ public class TranslateIterator implements Iterator<Request> {
 
   private final EntityCSVReader<Title> titleEntityCSVReader;
 
-
   private final List<Title> titlesBuffer = new LinkedList<>();
 
   private final List<RequestBody> requestBuffer = new LinkedList<>();

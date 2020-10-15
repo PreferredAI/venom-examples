@@ -10,6 +10,8 @@ import ai.preferred.venom.fetcher.AsyncFetcher;
 import ai.preferred.venom.fetcher.Fetcher;
 import ai.preferred.venom.job.LazyPriorityJobQueue;
 import ai.preferred.venom.request.Request;
+import ai.preferred.venom.validator.EmptyContentValidator;
+import ai.preferred.venom.validator.StatusOkValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +52,7 @@ public class Translate {
   private static Fetcher fetcher(Map<String, String> headers) {
     return AsyncFetcher.builder()
         .setHeaders(headers)
+        .setValidator(StatusOkValidator.INSTANCE, EmptyContentValidator.INSTANCE, new TranslateValidator())
         .build();
   }
 
