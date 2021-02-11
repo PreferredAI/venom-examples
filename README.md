@@ -10,6 +10,11 @@ For more information, read the tutorial guide below.
 [![Coverage Status](https://coveralls.io/repos/github/PreferredAI/Venom/badge.svg)](https://coveralls.io/github/PreferredAI/Venom)
 [![Javadocs](https://www.javadoc.io/badge/ai.preferred/venom.svg)](https://www.javadoc.io/doc/ai.preferred/venom)
 
+## Built for DSA 
+This GIT Repo has been built in IntelliJ with jdk 11.0.1.
+
+It should work from the initial pull.
+
 ## Overview
 Check out our main [Venom](https://github.com/PreferredAI/Venom) page for more information.
 
